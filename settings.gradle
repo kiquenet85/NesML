@@ -1,0 +1,6 @@
+include ':Dependencies'
+include ':search-services'
+include ':search-ui'
+include ':commons'
+include ':app'
+rootProject.name = "NesML"
