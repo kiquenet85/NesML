@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 apply from: "$rootProject.projectDir/buildSystem/dependencies.gradle"
@@ -25,6 +26,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "type"
+
+    productFlavors {
+        rx {
+            applicationId "com.nesml.rx"
+            dimension "type"
+        }
+
+        coroutines {
+            applicationId "com.nesml.coroutines"
+            dimension "type"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,14 +52,19 @@ android {
 
 dependencies {
 
-    implementation project(':commons')
-    implementation  project(':search-services')
+    api project(':commons')
+    implementation project(':search-services')
 
-    implementation (generalDependencies.lib_kotlin_stdlib)
-    implementation (generalDependencies.androidCore)
-    implementation (generalDependencies.appCompat)
-    implementation (generalDependencies.material)
+    //Dagger
+    implementation "com.google.dagger:dagger:$google_dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$google_dagger_version"
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$android_core"
+    implementation "androidx.appcompat:appcompat:$app_compat"
+    implementation "com.google.android.material:material:$material_version"
+
     testImplementation(testDependencies.jUnit)
-    androidTestImplementation (testDependencies.jUnitExt)
-    androidTestImplementation (testDependencies.expresso)
+    androidTestImplementation(testDependencies.jUnitExt)
+    androidTestImplementation(testDependencies.expresso)
 }

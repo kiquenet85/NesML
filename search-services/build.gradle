@@ -1,16 +1,17 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 apply from: "$rootProject.projectDir/buildSystem/dependencies.gradle"
 
 android {
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.nesml.search_services"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -25,6 +26,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "type"
+
+    productFlavors {
+        rx {
+            versionNameSuffix "-rx"
+            dimension "type"
+        }
+
+        coroutines {
+            versionNameSuffix "-cs"
+            dimension "type"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -36,7 +52,16 @@ android {
 
 dependencies {
 
-    implementation  project(':search-ui')
+    api project(':commons')
+    implementation project(':search-ui')
+
+    //Coroutines
+    coroutinesImplementation (generalDependencies.coroutinesCore)
+    coroutinesImplementation (generalDependencies.coroutinesAndroid)
+
+    //Dagger
+    implementation (generalDependencies.dagger)
+    kapt (generalDependencies.daggerKapt)
 
     implementation (generalDependencies.lib_kotlin_stdlib)
     implementation (generalDependencies.androidCore)

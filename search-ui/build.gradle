@@ -1,16 +1,17 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'kotlin-android'
+    id 'kotlin-kapt'
 }
 
 apply from: "$rootProject.projectDir/buildSystem/dependencies.gradle"
 
 android {
+
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
     defaultConfig {
-        applicationId "com.nesml.search_ui"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -36,14 +37,24 @@ android {
 
 dependencies {
 
-    implementation (generalDependencies.lib_kotlin_stdlib)
-    implementation (generalDependencies.androidCore)
-    implementation (generalDependencies.appCompat)
-    implementation (generalDependencies.material)
+    implementation  project(':commons')
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation "androidx.core:core-ktx:$android_core"
+    implementation "androidx.appcompat:appcompat:$app_compat"
+    implementation "com.google.android.material:material:$material_version"
 
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
+
+    //Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    //Dagger
+    implementation "com.google.dagger:dagger:$google_dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$google_dagger_version"
 
     testImplementation(testDependencies.jUnit)
     androidTestImplementation (testDependencies.jUnitExt)
