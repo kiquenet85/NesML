@@ -59,6 +59,11 @@ dependencies {
     implementation "com.google.dagger:dagger:$google_dagger_version"
     kapt "com.google.dagger:dagger-compiler:$google_dagger_version"
 
+    //Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$android_core"
     implementation "androidx.appcompat:appcompat:$app_compat"

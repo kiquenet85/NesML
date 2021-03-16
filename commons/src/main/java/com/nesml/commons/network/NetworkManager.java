@@ -14,6 +14,7 @@ import javax.inject.Inject;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Manager for Network operations.
@@ -43,7 +44,7 @@ public class NetworkManager {
             // Create a very simple REST adapter which points to the settings base URL.
             retrofit = new Retrofit.Builder()
                     .baseUrl(settings.getBaseUrl())
-                    //.addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .client(okHttpClient)
                     .build();
         }

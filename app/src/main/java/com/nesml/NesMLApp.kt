@@ -7,9 +7,9 @@ import com.nesml.commons.di.application.component.BaseAppComponentProvider
 import com.nesml.commons.di.application.component.DaggerBaseAppComponent
 import com.nesml.commons.di.application.module.BaseAppModule
 import com.nesml.commons.di.application.module.NetworkModule
-import com.nesml.di.AnalyticsModule
 import com.nesml.di.ApplicationComponent
 import com.nesml.di.DaggerApplicationComponent
+import com.nesml.di.StorageModule
 
 class NesMLApp : BaseApp(), BaseAppComponentProvider {
 
@@ -25,7 +25,7 @@ class NesMLApp : BaseApp(), BaseAppComponentProvider {
             Log.d(this.javaClass.simpleName, "CREATE application component")
             applicationComponent = DaggerApplicationComponent.builder()
                 .baseAppComponent(getBaseAppComponent())
-                .analyticsModule(AnalyticsModule())
+                .storageModule(StorageModule())
                 .build()
         }
         return applicationComponent!!
