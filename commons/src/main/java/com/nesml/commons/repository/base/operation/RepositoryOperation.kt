@@ -5,11 +5,13 @@ package com.nesml.commons.repository.base.operation
 import com.nesml.commons.repository.base.RepositoryPolicy
 import com.nesml.commons.repository.base.error.RemoteNetworkException
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.yield
 
 interface RepositoryReadOperation<Remote, Local, Info, Return> : RepositoryPolicy<Info> {
 
+    @ExperimentalCoroutinesApi
     suspend fun execute(info: Info): Flow<Return> {
         val emmitRemoteErrors = flow<OperationItem<Return>> {
             if (shouldGoRemote(info)) {

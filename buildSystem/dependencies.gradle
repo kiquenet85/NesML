@@ -12,11 +12,17 @@ ext {
     //Roon
     room_version = "2.2.6"
 
+    //Nav Graph
+    nav_version = "2.3.4"
 
     //Dagger
-    google_dagger_version = "2.33"
+    google_dagger_version = "2.7"
 
-    kotlinPlugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    //Gson
+    gson_version = "2.8.6"
+
+    //Gson
+    retrofit_version = "2.9.0"
 
     generalDependencies = [
             lib_kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
@@ -26,7 +32,10 @@ ext {
             coroutinesCore: "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version",
             coroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version",
             dagger: "com.google.dagger:dagger:$google_dagger_version",
-            daggerKapt: "com.google.dagger:dagger-compiler:$google_dagger_version"
+            daggerKapt: "com.google.dagger:dagger-compiler:$google_dagger_version",
+            gson: "com.google.code.gson:gson:$gson_version",
+            retrofit: "com.squareup.retrofit2:retrofit:$retrofit_version",
+            retrofit_converter: "com.squareup.retrofit2:converter-gson:$retrofit_version"
     ]
 
     testDependencies = [

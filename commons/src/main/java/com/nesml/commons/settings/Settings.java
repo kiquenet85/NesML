@@ -1,5 +1,7 @@
 package com.nesml.commons.settings;
 
+import javax.inject.Inject;
+
 /**
  * Typical settings for app.
  *
@@ -14,21 +16,9 @@ public class Settings {
     private int serviceTimeout;
     private int connectionTimeout;
 
-
+    @Inject
     public Settings() {
     }
-
-    /**
-     * Clones the given config.
-     *
-     * @param settings the config to clone.
-     */
-    public Settings(Settings settings) {
-        baseUrl = settings.baseUrl;
-        log = settings.log;
-        serviceTimeout = settings.serviceTimeout;
-    }
-
 
     public String getBaseUrl() {
         return baseUrl;

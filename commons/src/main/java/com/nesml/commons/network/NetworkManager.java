@@ -5,7 +5,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.nesml.commons.di.scope.ApplicationContext;
 import com.nesml.commons.settings.Settings;
 
 import java.util.concurrent.TimeUnit;
@@ -28,7 +27,7 @@ public class NetworkManager {
     private Retrofit retrofit = null;
 
     @Inject
-    public NetworkManager(@ApplicationContext Application contextApp, @ApplicationContext Settings settings) {
+    public NetworkManager(Application contextApp, Settings settings) {
         this.settings = settings;
         this.contextApp = contextApp;
         createDefaultRetrofit();

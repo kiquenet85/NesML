@@ -4,8 +4,8 @@ package com.nesml.commons.di.common.component;
  * @author n.diazgranados
  */
 
-public interface CommonUIProvider {
+public interface CommonProvider {
 
     //Subcomponent
-    CommonUIComponent getCommonUIComponent();
+    CommonComponent getCommonComponent();
 }

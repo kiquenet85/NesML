@@ -10,5 +10,4 @@ import dagger.Subcomponent;
 @Subcomponent(modules = {SearchServicesModule.class})
 public interface SearchServicesComponent {
 
-
 }

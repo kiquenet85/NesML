@@ -1,18 +1,14 @@
 package com.nesml.search_ui.ui.main
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.nesml.search_ui.R
 
 class SearchItemFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SearchItemFragment()
-    }
 
     private lateinit var viewModel: SearchItemViewModel
 
@@ -29,4 +25,7 @@ class SearchItemFragment : Fragment() {
         // TODO: Use the ViewModel
     }
 
+    companion object {
+        fun newInstance() = SearchItemFragment()
+    }
 }
