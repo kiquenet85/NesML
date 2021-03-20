@@ -1,0 +1,9 @@
+{
+  "baseUrl": "https://api.mercadolibre.com/",
+  "log": {
+    "level": 2
+  },
+  "serviceTimeout": 30,
+  "connectionTimeout": 10,
+  "lastModified": "2021-15-03T19:56:51.074Z"
+}

@@ -1,41 +1,56 @@
 package com.nesml.search_services.repository.search
 
 import com.nesml.commons.repository.base.RefreshRateLimit
-import com.nesml.commons.repository.base.RefreshRateLimit.Companion.NO_DIFF_TIME
 import com.nesml.commons.repository.base.operation.RepositoryReadOperation
 import com.nesml.search_services.model.db.entity.SearchItem
+import com.nesml.search_services.model.network.SearchItemDTO
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 
 class SearchRepository(
-    private val localSource: SearchLocalSource
+    private val localSource: SearchLocalSource,
+    private val remoteSource: SearchRemoteSource
 ) : RefreshRateLimit {
-    private var timeLastRemoteOperations = NO_DIFF_TIME
 
     @ExperimentalCoroutinesApi
     suspend fun getAll(info: ItemSearchInfo): Flow<List<SearchItem>> {
         val operation = object :
-            RepositoryReadOperation<List<String>, List<SearchItem>, ItemSearchInfo, List<SearchItem>> {
+            RepositoryReadOperation<List<SearchItemDTO>, List<SearchItem>, ItemSearchInfo, List<SearchItem>> {
 
             override suspend fun shouldGoRemote(info: ItemSearchInfo): Boolean {
-                return false
-                /*if (info.requiresRemote) {
-                    true
-                } else {
-                    //shouldRefreshData(timeLastRemoteOperations, info.timeOperation)
-                    false
-                }*/
+                return true
             }
 
-            override suspend fun endpoint(info: ItemSearchInfo): List<String> {
-                return emptyList() //remoteSource.getAll(info.accountId)
+            override suspend fun endpoint(info: ItemSearchInfo): List<SearchItemDTO> {
+                return remoteSource.getAll(info.accountId)
             }
 
             override suspend fun transformRemoteResult(
-                remoteData: List<String>,
+                remoteData: List<SearchItemDTO>,
                 info: ItemSearchInfo
             ): List<SearchItem> {
-                return remoteData.map { SearchItem(it) }
+                return remoteData.map {
+                    SearchItem(
+                        it.id,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null
+                    )
+                }
             }
 
             override suspend fun updateDatabase(

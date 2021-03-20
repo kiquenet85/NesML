@@ -50,8 +50,8 @@ dependencies {
     implementation "com.google.code.gson:gson:$gson_version"
 
     //Retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //ViewModel Necessary since using AppCompat for Base classes.
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0'
