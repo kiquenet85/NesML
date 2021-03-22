@@ -4,6 +4,7 @@ import android.app.Application;
 
 import com.google.gson.Gson;
 import com.nesml.commons.R;
+import com.nesml.commons.error.ErrorHandler;
 import com.nesml.commons.settings.Settings;
 import com.nesml.commons.util.FileUtil;
 
@@ -30,8 +31,7 @@ public class CommonModule {
 
     @Provides
     @Singleton
-    @Named("NesMLApp")
-    Gson provideGsonObject() {
-        return new Gson();
+    ErrorHandler provideErrorHandler() {
+        return new ErrorHandler();
     }
 }

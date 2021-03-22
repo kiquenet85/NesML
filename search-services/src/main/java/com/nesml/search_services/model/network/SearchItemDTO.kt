@@ -3,46 +3,46 @@ package com.nesml.search_services.model.network
 import com.google.gson.annotations.Expose
 
 data class SearchItemDTO(
-    @Expose val id: String,
-    @Expose val site_id: String? = null,
-    @Expose val title: String? = null,
-    @Expose val price: Int? = null,
-    @Expose val sale_price: String? = null,
-    @Expose val currency_id: String? = null,
-    @Expose val available_quantity: Int? = null,
-    @Expose val sold_quantity: Int? = null,
-    @Expose val buying_mode: String? = null,
-    @Expose val listing_type_id: String? = null,
-    @Expose val stop_time: String? = null,
-    @Expose val condition: String? = null,
-    @Expose val permalink: String? = null,
-    @Expose val thumbnail: String? = null,
-    @Expose val thumbnail_id: String? = null,
-    @Expose val accepts_mercadopago: Boolean? = null,
-    @Expose val installments: Installments? = null,
-    @Expose val attributes: List<Attributes>? = null,
-    @Expose val original_price: Int? = null,
-    @Expose val category_id: String? = null,
-    @Expose val official_store_id: String? = null,
-    @Expose val domain_id: String? = null,
-    @Expose val catalog_product_id: String? = null
+    @Expose var id: String,
+    @Expose var site_id: String? = null,
+    @Expose var title: String? = null,
+    @Expose var price: Int? = null,
+    @Expose var sale_price: String? = null,
+    @Expose var currency_id: String? = null,
+    @Expose var available_quantity: Int? = null,
+    @Expose var sold_quantity: Int? = null,
+    @Expose var buying_mode: String? = null,
+    @Expose var listing_type_id: String? = null,
+    @Expose var stop_time: String? = null,
+    @Expose var condition: String? = null,
+    @Expose var permalink: String? = null,
+    @Expose var thumbnail: String? = null,
+    @Expose var thumbnail_id: String? = null,
+    @Expose var accepts_mercadopago: Boolean? = null,
+    @Expose var installments: Installments? = null,
+    @Expose var attributes: List<Attributes>? = null,
+    @Expose var original_price: Int? = null,
+    @Expose var category_id: String? = null,
+    @Expose var official_store_id: String? = null,
+    @Expose var domain_id: String? = null,
+    @Expose var catalog_product_id: String? = null
 )
 
 data class Installments(
-    @Expose val quantity: Int? = null,
-    @Expose val amount: Int? = null,
-    @Expose val rate: Int? = null,
-    @Expose val currency_id: String? = null
+    @Expose var quantity: Int? = null,
+    @Expose var amount: Double? = null,
+    @Expose var rate: Int? = null,
+    @Expose var currency_id: String? = null
 )
 
 data class Attributes(
-    @Expose val id: String? = null,
-    @Expose val name: String? = null,
-    @Expose val value_name: String? = null,
-    @Expose val values: List<Values>? = null
+    @Expose var id: String? = null,
+    @Expose var name: String? = null,
+    @Expose var value_name: String? = null,
+    @Expose var values: List<Values>? = null
 )
 
 data class Values(
-    @Expose val id: String? = null,
-    @Expose val name: String? = null
+    @Expose var id: String? = null,
+    @Expose var name: String? = null
 )

@@ -26,6 +26,21 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "type"
+
+    productFlavors {
+        rx {
+            versionNameSuffix "-rx"
+            dimension "type"
+        }
+
+        coroutines {
+            versionNameSuffix "-cs"
+            dimension "type"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -38,7 +53,7 @@ android {
 dependencies {
 
     api project(':commons')
-    api project(path: ':search-services', configuration: 'default')
+    api project(':search-services')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$android_core"

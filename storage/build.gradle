@@ -4,10 +4,7 @@ plugins {
     id 'kotlin-kapt'
 }
 
-apply from: "$rootProject.projectDir/buildSystem/dependencies.gradle"
-
 android {
-
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
 
@@ -18,6 +15,16 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += [
+                        "room.schemaLocation":"$projectDir/schemas".toString(),
+                        "room.incremental":"true",
+                        "room.expandProjection":"true"]
+            }
+        }
     }
 
     buildTypes {
@@ -26,21 +33,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
-
-    flavorDimensions "type"
-
-    productFlavors {
-        rx {
-            versionNameSuffix "-rx"
-            dimension "type"
-        }
-
-        coroutines {
-            versionNameSuffix "-cs"
-            dimension "type"
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -51,19 +43,13 @@ android {
 }
 
 dependencies {
-    api project(":commons")
-    api project(":storage")
 
     //Coroutines
-    coroutinesImplementation (generalDependencies.coroutinesCore)
-    coroutinesImplementation (generalDependencies.coroutinesAndroid)
+    implementation (generalDependencies.coroutinesCore)
+    implementation (generalDependencies.coroutinesAndroid)
 
     //GSON
     implementation "com.google.code.gson:gson:$gson_version"
-
-    //Retrofit
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //Dagger
     implementation (generalDependencies.dagger)

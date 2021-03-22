@@ -1,19 +1,17 @@
-package com.nesml.search_services.repository.search
+package com.nesml.search_services.repository.search.sources
 
-import androidx.room.RoomDatabase
 import androidx.room.withTransaction
 import com.nesml.commons.util.Optional
-import com.nesml.search_services.model.db.SearchModuleDB
-import com.nesml.search_services.model.db.entity.SearchItem
+import com.nesml.storage.di.AppDB
+import com.nesml.storage.di.model.search.entity.SearchItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import javax.inject.Inject
 
-class SearchLocalSourceImp(private val db: RoomDatabase) : SearchLocalSource {
-
-    private val searchModuleDB = db as SearchModuleDB
+class SearchLocalSourceImp @Inject constructor(private val db: AppDB) : SearchLocalSource {
 
     override suspend fun createOrUpdate(accountId: String, items: List<SearchItem>): Boolean {
-        val oldItemsId = searchModuleDB.searchItemDAO().getAllId(accountId)
+        val oldItemsId = db.searchItemDAO().getAllId(accountId)
         val newItemsId = mutableListOf<String>()
         db.withTransaction {
             items.forEach { toInsert ->
@@ -23,7 +21,7 @@ class SearchLocalSourceImp(private val db: RoomDatabase) : SearchLocalSource {
 
             oldItemsId.forEach { oldItemId ->
                 if (!newItemsId.contains(oldItemId)) {
-                    searchModuleDB.searchItemDAO().delete(oldItemId)
+                    db.searchItemDAO().delete(oldItemId)
                 }
             }
         }
@@ -31,30 +29,30 @@ class SearchLocalSourceImp(private val db: RoomDatabase) : SearchLocalSource {
     }
 
     override suspend fun createOrUpdate(accountId: String, item: SearchItem): Boolean {
-        if (searchModuleDB.searchItemDAO().update(entityToInsert = item) == 0) {
-            searchModuleDB.searchItemDAO().insert(item)
+        if (db.searchItemDAO().update(entityToInsert = item) == 0) {
+            db.searchItemDAO().insert(item)
         }
         return true
     }
 
     override fun getAll(accountId: String): Flow<List<SearchItem>> {
-        return searchModuleDB.searchItemDAO().getAll(accountId)
+        return db.searchItemDAO().getAll(accountId)
             .filterNotNull()
-            .flowOn(Dispatchers.Default)
             .distinctUntilChanged()
             .conflate()
+            .flowOn(Dispatchers.Default)
     }
 
     override fun getById(id: String): Flow<Optional<SearchItem>> {
-        return searchModuleDB.searchItemDAO().getById(id)
+        return db.searchItemDAO().getById(id)
             .map { if (it == null) Optional.None else Optional.Some(it) }
-            .flowOn(Dispatchers.Default)
             .distinctUntilChanged()
             .conflate()
+            .flowOn(Dispatchers.Default)
     }
 
     override suspend fun deleteById(accountId: String, id: String): Int {
-        return searchModuleDB.searchItemDAO().delete(id)
+        return db.searchItemDAO().delete(id)
     }
 
     override suspend fun deleteAll(accountId: String, items: List<SearchItem>): Int {
@@ -62,7 +60,7 @@ class SearchLocalSourceImp(private val db: RoomDatabase) : SearchLocalSource {
         db.withTransaction {
             items.forEach {
                 it.id.let { elementId ->
-                    deletions = searchModuleDB.searchItemDAO().delete(elementId)
+                    deletions = db.searchItemDAO().delete(elementId)
                 }
             }
         }

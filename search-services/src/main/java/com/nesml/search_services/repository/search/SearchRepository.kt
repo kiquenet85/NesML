@@ -1,15 +1,20 @@
 package com.nesml.search_services.repository.search
 
+import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.repository.base.RefreshRateLimit
 import com.nesml.commons.repository.base.operation.RepositoryReadOperation
-import com.nesml.search_services.model.db.entity.SearchItem
 import com.nesml.search_services.model.network.SearchItemDTO
+import com.nesml.search_services.repository.search.sources.SearchLocalSource
+import com.nesml.search_services.repository.search.sources.SearchRemoteSource
+import com.nesml.storage.di.model.search.entity.SearchItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class SearchRepository(
+class SearchRepository @Inject constructor(
     private val localSource: SearchLocalSource,
-    private val remoteSource: SearchRemoteSource
+    private val remoteSource: SearchRemoteSource,
+    private val errorHandler: ErrorHandler
 ) : RefreshRateLimit {
 
     @ExperimentalCoroutinesApi
@@ -22,7 +27,7 @@ class SearchRepository(
             }
 
             override suspend fun endpoint(info: ItemSearchInfo): List<SearchItemDTO> {
-                return remoteSource.getAll(info.accountId)
+                return remoteSource.getAll(info.query).searchItems
             }
 
             override suspend fun transformRemoteResult(
@@ -35,7 +40,7 @@ class SearchRepository(
                         null,
                         null,
                         null,
-                        null,
+                        info.accountId,
                         null,
                         null,
                         null,
@@ -63,6 +68,8 @@ class SearchRepository(
             override suspend fun readFromDatabase(info: ItemSearchInfo): Flow<List<SearchItem>> {
                 return localSource.getAll(info.accountId)
             }
+
+            override fun getErrorHandler() = errorHandler
         }
         return operation.execute(info)
     }
@@ -70,6 +77,7 @@ class SearchRepository(
 
 data class ItemSearchInfo(
     val accountId: String,
-    val requiresRemote: Boolean = false,
+    val query: String,
+    val requiresRemote: Boolean = true,
     val timeOperation: Long = System.currentTimeMillis()
 )

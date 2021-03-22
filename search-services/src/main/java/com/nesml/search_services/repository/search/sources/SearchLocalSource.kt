@@ -1,7 +1,7 @@
-package com.nesml.search_services.repository.search
+package com.nesml.search_services.repository.search.sources
 
 import com.nesml.commons.util.Optional
-import com.nesml.search_services.model.db.entity.SearchItem
+import com.nesml.storage.di.model.search.entity.SearchItem
 import kotlinx.coroutines.flow.Flow
 
 interface SearchLocalSource {

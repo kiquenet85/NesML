@@ -3,6 +3,7 @@ package com.nesml.commons.di.common.component;
 import com.google.gson.Gson;
 import com.nesml.commons.di.common.module.CommonModule;
 import com.nesml.commons.di.common.module.NetworkModule;
+import com.nesml.commons.error.ErrorHandler;
 import com.nesml.commons.network.NetworkManager;
 import com.nesml.commons.network.WifiReceiver;
 import com.nesml.commons.settings.Settings;
@@ -30,4 +31,6 @@ public interface CommonComponent {
 
     @Named("NesMLApp")
     Gson getGson();
+
+    ErrorHandler getErrorHandler();
 }

@@ -1,4 +1,4 @@
-package com.nesml.search_services.model.db.entity
+package com.nesml.storage.di.model.search.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

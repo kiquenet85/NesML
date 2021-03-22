@@ -1,3 +1,4 @@
+include ':storage'
 include ':Dependencies'
 include ':search-services'
 include ':search-ui'
