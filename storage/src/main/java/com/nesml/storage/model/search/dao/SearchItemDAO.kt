@@ -1,7 +1,11 @@
-package com.nesml.storage.di.model.search.dao
+package com.nesml.storage.model.search.dao
 
-import androidx.room.*
-import com.nesml.storage.di.model.search.entity.SearchItem
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import com.nesml.storage.model.search.entity.SearchItem
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -6,7 +6,7 @@ import com.nesml.commons.repository.base.operation.RepositoryReadOperation
 import com.nesml.search_services.model.network.SearchItemDTO
 import com.nesml.search_services.repository.search.sources.SearchLocalSource
 import com.nesml.search_services.repository.search.sources.SearchRemoteSource
-import com.nesml.storage.di.model.search.entity.SearchItem
+import com.nesml.storage.model.search.entity.SearchItem
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package com.nesml.storage.di.component;
 
-import com.nesml.storage.di.AppDB;
+import com.nesml.storage.AppDB;
 import com.nesml.storage.di.module.StorageModule;
 
 import javax.inject.Singleton;
