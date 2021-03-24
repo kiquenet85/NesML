@@ -8,21 +8,21 @@ import com.nesml.commons.error.ErrorHandler
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
+//TODO: Move strings to resources.
 abstract class BaseCoroutineViewModel(errorHandler: ErrorHandler) : ViewModel() {
-    open val errorHandler = CoroutineExceptionHandler { coroutineScope, exception ->
+    open val errorHandler = CoroutineExceptionHandler { _, exception ->
         viewModelScope.launch {
             try {
-                errorState.value = CommonErrorState.NonCriticalUIError
+                errorState.value =
+                    CommonErrorState.CriticalHandledUIError("Something went wrong please try later!")
                 errorHandler.reportCriticalException(
                     exception,
-                    "Critical exception on coroutine error handler"
+                    "Handled exception on coroutine builder"
                 )
             } catch (reportException: Exception) {
-                errorState.value = CommonErrorState.CriticalUIError
-                errorHandler.reportErrorHandlingException(
-                    exception,
-                    "Error handling exception on coroutine error handler",
-                )
+                val message = "Error handling exception on coroutine error handler"
+                errorState.value = CommonErrorState.CriticalUIError(message)
+                errorHandler.reportErrorHandlingException(exception, message)
             }
         }
     }
@@ -31,7 +31,7 @@ abstract class BaseCoroutineViewModel(errorHandler: ErrorHandler) : ViewModel() 
     fun getErrorState(): LiveData<CommonErrorState> = errorState
 }
 
-sealed class CommonErrorState {
-    object NonCriticalUIError : CommonErrorState()
-    object CriticalUIError : CommonErrorState()
+sealed class CommonErrorState(open val message: String) {
+    class CriticalHandledUIError(override val message: String) : CommonErrorState(message)
+    class CriticalUIError(override val message: String) : CommonErrorState(message)
 }

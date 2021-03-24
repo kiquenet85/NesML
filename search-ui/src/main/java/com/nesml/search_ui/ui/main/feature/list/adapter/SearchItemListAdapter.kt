@@ -1,0 +1,76 @@
+package com.nesml.search_ui.ui.main.feature.list.adapter
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.nesml.commons.error.ErrorHandler
+import com.nesml.commons.manager.ResourceManager
+import com.nesml.search_ui.R
+import com.nesml.storage.model.search.entity.SearchItem
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
+
+//TODO move strings to resources
+class SearchItemListAdapter(
+    private val resourceManager: ResourceManager,
+    private val errorHandler: ErrorHandler,
+    private val localDataSet: MutableList<SearchItem>
+) :
+    RecyclerView.Adapter<SearchItemListAdapter.ViewHolder>() {
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val image: ImageView = view.findViewById(R.id.itemImage)
+        val name: TextView = view.findViewById(R.id.name)
+        val price: TextView = view.findViewById(R.id.price)
+        val installments: TextView = view.findViewById(R.id.installments)
+        val arrival: TextView = view.findViewById(R.id.arrival)
+    }
+
+    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = LayoutInflater.from(viewGroup.context)
+            .inflate(R.layout.search_list_item, viewGroup, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        with(localDataSet[position]) {
+            viewHolder.name.text = this.title
+            viewHolder.price.text =
+                this.price?.toString() ?: this.sale_price ?: this.original_price?.toString()
+                        ?: "NO PRICE FOUND"
+            viewHolder.installments.text = this.installment?.let {
+                if (it.quantity != null && it.amount != null) "${it.quantity} x ${it.amount}" else "No installments available."
+            }
+            this.condition?.let {
+                viewHolder.arrival.text = this.condition
+            }
+            this.thumbnail?.let {
+                val https = it.replace("http://", "https://")
+                Picasso.get()
+                    .load(https)
+                    .into(viewHolder.image, object : Callback {
+                        override fun onSuccess() {
+
+                        }
+
+                        override fun onError(e: Exception) {
+                            errorHandler.report(e)
+                        }
+                    })
+            }
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return localDataSet.size
+    }
+
+    fun addNewItems(allItems: List<SearchItem>) {
+        localDataSet.clear()
+        localDataSet.addAll(allItems)
+        notifyDataSetChanged()
+    }
+}

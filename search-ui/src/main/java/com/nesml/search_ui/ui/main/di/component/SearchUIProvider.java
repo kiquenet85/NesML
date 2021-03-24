@@ -6,5 +6,5 @@ package com.nesml.search_ui.ui.main.di.component;
 public interface SearchUIProvider {
 
     //Subcomponent
-    SearchUIComponent getSearchServices();
+    SearchUIComponent getSearchUI();
 }

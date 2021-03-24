@@ -7,9 +7,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.NesML">
-        <activity android:name=".SearchItemActivity">
+        android:supportsRtl="true">
+        <activity
+            android:theme="@style/AppTheme.NoActionBar"
+            android:name=".ui.main.feature.list.ui.SearchListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

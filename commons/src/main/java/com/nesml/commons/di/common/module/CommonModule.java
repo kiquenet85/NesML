@@ -5,6 +5,7 @@ import android.app.Application;
 import com.google.gson.Gson;
 import com.nesml.commons.R;
 import com.nesml.commons.error.ErrorHandler;
+import com.nesml.commons.manager.ResourceManager;
 import com.nesml.commons.settings.Settings;
 import com.nesml.commons.util.FileUtil;
 
@@ -19,7 +20,6 @@ import dagger.Provides;
  *
  * @author n.diazgranados
  */
-//@Module(subcomponents = {ActivityComponent.class})
 @Module
 public class CommonModule {
 
@@ -33,5 +33,11 @@ public class CommonModule {
     @Singleton
     ErrorHandler provideErrorHandler() {
         return new ErrorHandler();
+    }
+
+    @Provides
+    @Singleton
+    ResourceManager provideResourceManager(Application applicationContext) {
+        return ResourceManager.getInstance(applicationContext);
     }
 }

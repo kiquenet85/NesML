@@ -4,6 +4,6 @@
     "level": 2
   },
   "serviceTimeout": 30,
-  "connectionTimeout": 10,
+  "connectionTimeout": 30,
   "lastModified": "2021-15-03T19:56:51.074Z"
 }

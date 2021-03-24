@@ -24,6 +24,9 @@ ext {
     //Gson
     retrofit_version = "2.9.0"
 
+    //UI specific
+    lifecycle_version = "2.3.0"
+
     generalDependencies = [
             lib_kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
             androidCore: "androidx.core:core-ktx:$android_core",

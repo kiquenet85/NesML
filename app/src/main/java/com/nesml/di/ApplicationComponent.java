@@ -7,6 +7,7 @@ import com.nesml.commons.di.common.module.CommonModule;
 import com.nesml.commons.di.common.module.NetworkModule;
 import com.nesml.search_services.di.component.SearchServicesComponent;
 import com.nesml.search_services.di.module.SearchServicesModule;
+import com.nesml.search_ui.ui.main.di.component.SearchUIComponent;
 import com.nesml.search_ui.ui.main.di.module.SearchUIModule;
 import com.nesml.storage.di.component.StorageComponent;
 import com.nesml.storage.di.module.StorageModule;
@@ -30,6 +31,9 @@ public interface ApplicationComponent {
 
     //Common SubComponent
     CommonComponent getCommonComponent();
+
+    //SearchServices SubComponent
+    SearchUIComponent getSearchUIComponent();
 
     //SearchServices SubComponent
     SearchServicesComponent getSearchServicesComponent();
