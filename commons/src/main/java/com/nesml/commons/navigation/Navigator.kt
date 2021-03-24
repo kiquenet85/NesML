@@ -46,7 +46,7 @@ class Navigator(private val activity: AppCompatActivity) {
         return if (usingAddTransaction) {
             transaction.add(containerId, fragment, tag).commitAllowingStateLoss()
         } else {
-            transaction.replace(containerId, fragment, tag)?.commitAllowingStateLoss()
+            transaction.replace(containerId, fragment, tag).commitAllowingStateLoss()
         }
     }
 }

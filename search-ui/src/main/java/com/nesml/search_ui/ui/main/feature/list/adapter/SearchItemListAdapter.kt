@@ -13,7 +13,6 @@ import com.nesml.storage.model.search.entity.SearchItem
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-//TODO move strings to resources
 class SearchItemListAdapter(
     private val resourceManager: ResourceManager,
     private val errorHandler: ErrorHandler,
@@ -36,13 +35,15 @@ class SearchItemListAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
+        val context = viewHolder.name.context
         with(localDataSet[position]) {
             viewHolder.name.text = this.title
             viewHolder.price.text =
                 this.price?.toString() ?: this.sale_price ?: this.original_price?.toString()
-                        ?: "NO PRICE FOUND"
+                        ?: context.getString(R.string.search_list_no_price_found)
             viewHolder.installments.text = this.installment?.let {
-                if (it.quantity != null && it.amount != null) "${it.quantity} x ${it.amount}" else "No installments available."
+                if (it.quantity != null && it.amount != null) "${it.quantity} x ${it.amount}"
+                else context.getString(R.string.search_list_no_installments)
             }
             this.condition?.let {
                 viewHolder.arrival.text = this.condition

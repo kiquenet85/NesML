@@ -5,16 +5,19 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nesml.commons.error.ErrorHandler
+import com.nesml.commons.manager.ResourceManager
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.launch
 
-//TODO: Move strings to resources.
-abstract class BaseCoroutineViewModel(errorHandler: ErrorHandler) : ViewModel() {
+abstract class BaseCoroutineViewModel(
+    resourceManager: ResourceManager,
+    errorHandler: ErrorHandler
+) : ViewModel() {
     open val errorHandler = CoroutineExceptionHandler { _, exception ->
         viewModelScope.launch {
             try {
                 errorState.value =
-                    CommonErrorState.CriticalHandledUIError("Something went wrong please try later!")
+                    CommonErrorState.CriticalHandledUIError(resourceManager.getString(R.string.general_error_handled))
                 errorHandler.reportCriticalException(
                     exception,
                     "Handled exception on coroutine builder"

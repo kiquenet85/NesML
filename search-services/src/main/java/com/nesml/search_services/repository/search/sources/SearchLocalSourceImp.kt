@@ -7,13 +7,7 @@ import com.nesml.storage.AppDB
 import com.nesml.storage.model.account.entity.Account
 import com.nesml.storage.model.search.entity.SearchItem
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.filterNotNull
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 class SearchLocalSourceImp @Inject constructor(private val db: AppDB) : SearchLocalSource {
@@ -57,7 +51,7 @@ class SearchLocalSourceImp @Inject constructor(private val db: AppDB) : SearchLo
 
     override fun getAll(accountId: String): Flow<List<SearchItem>> {
         return db.searchItemDAO().getAll(accountId)
-                .filterNotNull()
+            .filterNotNull()
             .distinctUntilChanged()
             .conflate()
             .flowOn(Dispatchers.Default)

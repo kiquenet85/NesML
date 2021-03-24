@@ -1,0 +1,470 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "7296cd770071202616434a2c53549557",
+    "entities": [
+      {
+        "tableName": "Account",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `name` TEXT NOT NULL, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Account_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Account_id` ON `${TABLE_NAME}` (`id`)"
+          }
+        ],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "SearchItem",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `accountId` TEXT NOT NULL, `site_id` TEXT, `title` TEXT, `price` INTEGER, `sale_price` TEXT, `currency_id` TEXT, `available_quantity` INTEGER, `sold_quantity` INTEGER, `buying_mode` TEXT, `listing_type_id` TEXT, `stop_time` TEXT, `condition` TEXT, `permalink` TEXT, `thumbnail` TEXT, `thumbnail_id` TEXT, `accepts_mercadopago` INTEGER, `original_price` INTEGER, `category_id` TEXT, `official_store_id` TEXT, `domain_id` TEXT, `catalog_product_id` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`accountId`) REFERENCES `Account`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "accountId",
+            "columnName": "accountId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "site_id",
+            "columnName": "site_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "title",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "price",
+            "columnName": "price",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sale_price",
+            "columnName": "sale_price",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "currency_id",
+            "columnName": "currency_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "available_quantity",
+            "columnName": "available_quantity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "sold_quantity",
+            "columnName": "sold_quantity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "buying_mode",
+            "columnName": "buying_mode",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "listing_type_id",
+            "columnName": "listing_type_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "stop_time",
+            "columnName": "stop_time",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "condition",
+            "columnName": "condition",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "permalink",
+            "columnName": "permalink",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "thumbnail",
+            "columnName": "thumbnail",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "thumbnail_id",
+            "columnName": "thumbnail_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "accepts_mercadopago",
+            "columnName": "accepts_mercadopago",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "original_price",
+            "columnName": "original_price",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "category_id",
+            "columnName": "category_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "official_store_id",
+            "columnName": "official_store_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "domain_id",
+            "columnName": "domain_id",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "catalog_product_id",
+            "columnName": "catalog_product_id",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_SearchItem_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_SearchItem_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_SearchItem_accountId",
+            "unique": false,
+            "columnNames": [
+              "accountId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_SearchItem_accountId` ON `${TABLE_NAME}` (`accountId`)"
+          },
+          {
+            "name": "index_SearchItem_id_accountId",
+            "unique": true,
+            "columnNames": [
+              "id",
+              "accountId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_SearchItem_id_accountId` ON `${TABLE_NAME}` (`id`, `accountId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Account",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "accountId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Attribute",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `searchItemId` TEXT NOT NULL, `name` TEXT NOT NULL, `value_name` TEXT, PRIMARY KEY(`id`, `searchItemId`), FOREIGN KEY(`searchItemId`) REFERENCES `SearchItem`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "searchItemId",
+            "columnName": "searchItemId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value_name",
+            "columnName": "value_name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id",
+            "searchItemId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Attribute_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Attribute_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_Attribute_searchItemId",
+            "unique": true,
+            "columnNames": [
+              "searchItemId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Attribute_searchItemId` ON `${TABLE_NAME}` (`searchItemId`)"
+          },
+          {
+            "name": "index_Attribute_id_searchItemId",
+            "unique": true,
+            "columnNames": [
+              "id",
+              "searchItemId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Attribute_id_searchItemId` ON `${TABLE_NAME}` (`id`, `searchItemId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "SearchItem",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "searchItemId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "Installment",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `searchItemId` TEXT NOT NULL, `quantity` INTEGER, `amount` REAL, `rate` INTEGER, `currency_id` TEXT, PRIMARY KEY(`id`, `searchItemId`), FOREIGN KEY(`searchItemId`) REFERENCES `SearchItem`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "searchItemId",
+            "columnName": "searchItemId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "quantity",
+            "columnName": "quantity",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "amount",
+            "columnName": "amount",
+            "affinity": "REAL",
+            "notNull": false
+          },
+          {
+            "fieldPath": "rate",
+            "columnName": "rate",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "currency_id",
+            "columnName": "currency_id",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id",
+            "searchItemId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_Installment_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Installment_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_Installment_searchItemId",
+            "unique": true,
+            "columnNames": [
+              "searchItemId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Installment_searchItemId` ON `${TABLE_NAME}` (`searchItemId`)"
+          },
+          {
+            "name": "index_Installment_id_searchItemId",
+            "unique": true,
+            "columnNames": [
+              "id",
+              "searchItemId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Installment_id_searchItemId` ON `${TABLE_NAME}` (`id`, `searchItemId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "SearchItem",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "searchItemId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "AttributeValue",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `attributeId` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`id`, `attributeId`), FOREIGN KEY(`attributeId`) REFERENCES `Attribute`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "attributeId",
+            "columnName": "attributeId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id",
+            "attributeId"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [
+          {
+            "name": "index_AttributeValue_id",
+            "unique": true,
+            "columnNames": [
+              "id"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AttributeValue_id` ON `${TABLE_NAME}` (`id`)"
+          },
+          {
+            "name": "index_AttributeValue_attributeId",
+            "unique": true,
+            "columnNames": [
+              "attributeId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AttributeValue_attributeId` ON `${TABLE_NAME}` (`attributeId`)"
+          },
+          {
+            "name": "index_AttributeValue_id_attributeId",
+            "unique": true,
+            "columnNames": [
+              "id",
+              "attributeId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AttributeValue_id_attributeId` ON `${TABLE_NAME}` (`id`, `attributeId`)"
+          }
+        ],
+        "foreignKeys": [
+          {
+            "table": "Attribute",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "attributeId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "views": [],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '7296cd770071202616434a2c53549557')"
+    ]
+  }
+}

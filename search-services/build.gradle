@@ -55,8 +55,8 @@ dependencies {
     api project(":storage")
 
     //Coroutines
-    coroutinesImplementation (generalDependencies.coroutinesCore)
-    coroutinesImplementation (generalDependencies.coroutinesAndroid)
+    coroutinesImplementation(generalDependencies.coroutinesCore)
+    coroutinesImplementation(generalDependencies.coroutinesAndroid)
 
     //GSON
     implementation "com.google.code.gson:gson:$gson_version"
@@ -66,17 +66,17 @@ dependencies {
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
     //Dagger
-    implementation (generalDependencies.dagger)
-    kapt (generalDependencies.daggerKapt)
+    implementation(generalDependencies.dagger)
+    kapt(generalDependencies.daggerKapt)
 
     //Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
 
-    implementation (generalDependencies.lib_kotlin_stdlib)
-    implementation (generalDependencies.androidCore)
-    implementation (generalDependencies.appCompat)
+    implementation(generalDependencies.lib_kotlin_stdlib)
+    implementation(generalDependencies.androidCore)
+    implementation(generalDependencies.appCompat)
     testImplementation(testDependencies.jUnit)
-    androidTestImplementation (testDependencies.jUnitExt)
+    androidTestImplementation(testDependencies.jUnitExt)
 }

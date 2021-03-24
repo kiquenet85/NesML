@@ -62,6 +62,6 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
 
     testImplementation(testDependencies.jUnit)
-    androidTestImplementation (testDependencies.jUnitExt)
-    androidTestImplementation (testDependencies.expresso)
+    androidTestImplementation(testDependencies.jUnitExt)
+    androidTestImplementation(testDependencies.expresso)
 }

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Search-ui</string>
+    <string name="search_list_no_price_found">No price found</string>
+    <string name="search_list_no_installments">No installments available.</string>
 </resources>
