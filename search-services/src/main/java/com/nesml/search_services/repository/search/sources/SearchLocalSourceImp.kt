@@ -1,14 +1,17 @@
 package com.nesml.search_services.repository.search.sources
 
 import androidx.room.withTransaction
+import com.nesml.commons.util.ACCOUNT_MOCK
 import com.nesml.commons.util.Optional
 import com.nesml.storage.AppDB
+import com.nesml.storage.model.account.entity.Account
 import com.nesml.storage.model.search.entity.SearchItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -18,11 +21,19 @@ class SearchLocalSourceImp @Inject constructor(private val db: AppDB) : SearchLo
     override suspend fun createOrUpdate(accountId: String, items: List<SearchItem>): Boolean {
         val oldItemsId = db.searchItemDAO().getAllId(accountId)
         val newItemsId = mutableListOf<String>()
+
+        val account = db.accountDAO().getById(ACCOUNT_MOCK).first()
+        if (account == null) {
+            db.accountDAO().insert(Account(ACCOUNT_MOCK, "Singleton Account"))
+        }
+
         db.withTransaction {
             items.forEach { toInsert ->
                 newItemsId.add(toInsert.id)
-                createOrUpdate(accountId, toInsert)
+                toInsert.accountId = accountId
             }
+
+            createOrUpdate(items)
 
             oldItemsId.forEach { oldItemId ->
                 if (!newItemsId.contains(oldItemId)) {
@@ -33,16 +44,20 @@ class SearchLocalSourceImp @Inject constructor(private val db: AppDB) : SearchLo
         return true
     }
 
+    private suspend fun createOrUpdate(items: List<SearchItem>): Boolean {
+        db.searchItemDAO().insert(items)
+        return true
+    }
+
     override suspend fun createOrUpdate(accountId: String, item: SearchItem): Boolean {
-        if (db.searchItemDAO().update(entityToInsert = item) == 0) {
-            db.searchItemDAO().insert(item)
-        }
+        item.accountId = accountId
+        db.searchItemDAO().insert(item)
         return true
     }
 
     override fun getAll(accountId: String): Flow<List<SearchItem>> {
         return db.searchItemDAO().getAll(accountId)
-            .filterNotNull()
+                .filterNotNull()
             .distinctUntilChanged()
             .conflate()
             .flowOn(Dispatchers.Default)

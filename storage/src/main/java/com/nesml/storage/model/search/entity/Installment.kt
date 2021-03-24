@@ -9,10 +9,13 @@ import androidx.room.Index
                 parentColumns = ["id"],
                 childColumns = ["searchItemId"]
         )],
-        indices = [Index(value = ["id", "searchItemId"], unique = true)],
+        indices = [Index(value = ["id"], unique = true),
+            Index(value = ["searchItemId"], unique = true),
+            Index(value = ["id", "searchItemId"], unique = true)
+        ],
         primaryKeys = ["id", "searchItemId"]
 )
-data class Installments(
+data class Installment(
         var id: String,
         var searchItemId: String,
         var quantity: Int? = null,

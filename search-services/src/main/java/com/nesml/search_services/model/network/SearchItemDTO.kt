@@ -19,8 +19,8 @@ data class SearchItemDTO(
         @Expose var thumbnail: String? = null,
         @Expose var thumbnail_id: String? = null,
         @Expose var accepts_mercadopago: Boolean? = null,
-        @Expose var installmentsDTO: InstallmentsDTO? = null,
-        @Expose var attributes: List<AttributesDTO>? = null,
+        @Expose var installmentDTO: InstallmentDTO? = null,
+        @Expose var attributes: List<AttributeDTO>? = null,
         @Expose var original_price: Int? = null,
         @Expose var category_id: String? = null,
         @Expose var official_store_id: String? = null,
@@ -28,21 +28,21 @@ data class SearchItemDTO(
         @Expose var catalog_product_id: String? = null
 )
 
-data class InstallmentsDTO(
+data class InstallmentDTO(
         @Expose var quantity: Int? = null,
         @Expose var amount: Double? = null,
         @Expose var rate: Int? = null,
         @Expose var currency_id: String? = null
 )
 
-data class AttributesDTO(
-        @Expose var id: String? = null,
-        @Expose var name: String? = null,
-        @Expose var value_name: String? = null,
-        @Expose var values: List<ValuesDTO>? = null
+data class AttributeDTO(
+        @Expose var id: String,
+        @Expose var name: String,
+        @Expose var value_name: String,
+        @Expose var values: List<AttributeValueDTO>? = null
 )
 
-data class ValuesDTO(
+data class AttributeValueDTO(
         @Expose var id: String? = null,
         @Expose var name: String? = null
 )

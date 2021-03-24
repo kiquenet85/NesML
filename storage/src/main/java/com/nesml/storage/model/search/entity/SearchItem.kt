@@ -1,6 +1,8 @@
 package com.nesml.storage.model.search.entity
 
 import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.nesml.storage.model.account.entity.Account
 
@@ -9,7 +11,10 @@ import com.nesml.storage.model.account.entity.Account
                 entity = Account::class,
                 parentColumns = ["id"],
                 childColumns = ["accountId"]
-        )]
+        )],
+        indices = [Index(value = ["id"], unique = true),
+                Index(value = ["accountId"], unique = false),
+                Index(value = ["id", "accountId"], unique = true)],
 )
 data class SearchItem(
         @PrimaryKey
@@ -30,11 +35,15 @@ data class SearchItem(
         var thumbnail: String? = null,
         var thumbnail_id: String? = null,
         var accepts_mercadopago: Boolean? = null,
-        var installments: Installments? = null,
-        var attributes: List<Attributes>? = null,
         var original_price: Int? = null,
         var category_id: String? = null,
         var official_store_id: String? = null,
         var domain_id: String? = null,
         var catalog_product_id: String? = null
-)
+) {
+        @Ignore
+        var installment: Installment? = null
+
+        @Ignore
+        var attributes: List<Attribute>? = null
+}
