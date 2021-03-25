@@ -16,11 +16,11 @@ import com.nesml.storage.model.search.entity.Installment
 import com.nesml.storage.model.search.entity.SearchItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import java.util.*
-import javax.inject.Inject
 
-class SearchRepository @Inject constructor(
+class SearchRepository constructor(
     private val localSource: SearchLocalSource,
     private val localSourceInstallment: InstallmentLocalSource,
     private val localSourceAttribute: AttributeLocalSource,
@@ -45,59 +45,7 @@ class SearchRepository @Inject constructor(
                 remoteData: List<SearchItemDTO>,
                 info: ItemSearchInfo
             ): List<SearchItem> {
-                return remoteData.map {
-                    SearchItem(
-                        it.id,
-                        info.accountId,
-                        it.site_id,
-                        it.title,
-                        it.price,
-                        it.sale_price,
-                        it.currency_id,
-                        it.available_quantity,
-                        it.sold_quantity,
-                        it.buying_mode,
-                        it.listing_type_id,
-                        it.stop_time,
-                        it.condition,
-                        it.permalink,
-                        it.thumbnail,
-                        it.thumbnail_id,
-                        it.accepts_mercadopago,
-                        it.original_price,
-                        it.category_id,
-                        it.official_store_id,
-                        it.domain_id,
-                        it.catalog_product_id
-                    ).apply {
-                        installment = Installment(
-                            id = UUID.randomUUID().toString(),
-                            searchItemId = it.id,
-                            quantity = it.installmentDTO?.quantity,
-                            amount = it.installmentDTO?.amount,
-                            rate = it.installmentDTO?.rate,
-                            currency_id = it.installmentDTO?.currency_id
-                        )
-                        attributes = it.attributes?.map { attributeDTO ->
-                            val attributeId = UUID.randomUUID().toString()
-                            Attribute(
-                                id = attributeId,
-                                searchItemId = it.id,
-                                name = attributeDTO.name,
-                                value_name = attributeDTO.value_name,
-                            ).apply {
-                                values = attributeDTO.values?.map { attributeValueDTO ->
-                                    AttributeValue(
-                                        id = UUID.randomUUID().toString(),
-                                        attributeId = attributeId,
-                                        searchItemId = it.id,
-                                        name = attributeValueDTO.name
-                                    )
-                                }
-                            }
-                        }
-                    }
-                }
+                return transformToEntityObject(remoteData, info)
             }
 
             override suspend fun updateDatabase(
@@ -158,7 +106,64 @@ class SearchRepository @Inject constructor(
         return operation.execute(info)
     }
 
-    suspend fun getById(searchItemId: String): Flow<SearchItem> {
+    private fun transformToEntityObject(
+        remoteData: List<SearchItemDTO>,
+        info: ItemSearchInfo
+    ) = remoteData.map {
+        SearchItem(
+            it.id,
+            info.accountId,
+            it.site_id,
+            it.title,
+            it.price,
+            it.sale_price,
+            it.currency_id,
+            it.available_quantity,
+            it.sold_quantity,
+            it.buying_mode,
+            it.listing_type_id,
+            it.stop_time,
+            it.condition,
+            it.permalink,
+            it.thumbnail,
+            it.thumbnail_id,
+            it.accepts_mercadopago,
+            it.original_price,
+            it.category_id,
+            it.official_store_id,
+            it.domain_id,
+            it.catalog_product_id
+        ).apply {
+            installment = Installment(
+                id = UUID.randomUUID().toString(),
+                searchItemId = it.id,
+                quantity = it.installmentDTO?.quantity,
+                amount = it.installmentDTO?.amount,
+                rate = it.installmentDTO?.rate,
+                currency_id = it.installmentDTO?.currency_id
+            )
+            attributes = it.attributes?.map { attributeDTO ->
+                val attributeId = UUID.randomUUID().toString()
+                Attribute(
+                    id = attributeId,
+                    searchItemId = it.id,
+                    name = attributeDTO.name,
+                    value_name = attributeDTO.value_name,
+                ).apply {
+                    values = attributeDTO.values?.map { attributeValueDTO ->
+                        AttributeValue(
+                            id = UUID.randomUUID().toString(),
+                            attributeId = attributeId,
+                            searchItemId = it.id,
+                            name = attributeValueDTO.name
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun getById(searchItemId: String): Flow<SearchItem> {
         return (localSource.getById(searchItemId)).map {
             if (it is Optional.None) {
                 throw IllegalStateException("Clicked item does not exist on the database")
@@ -181,6 +186,10 @@ class SearchRepository @Inject constructor(
                 }
                 searchItem
             }
+    }
+
+    fun getAllRemote(info: ItemSearchInfo): Flow<List<SearchItem>> = flow {
+        emit(transformToEntityObject(remoteSource.getAll(info.query).searchItems, info))
     }
 }
 

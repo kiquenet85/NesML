@@ -8,8 +8,10 @@ import com.nesml.commons.BaseCoroutineViewModel
 import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.manager.ResourceManager
 import com.nesml.search_ui.ui.main.feature.detail.use_case.LoadSearchItemUC
+import com.nesml.search_ui.ui.main.feature.detail.use_case.SearchDetailLoaded
 import com.nesml.search_ui.ui.main.feature.detail.use_case.SearchDetailState
 import com.nesml.search_ui.ui.main.feature.list.use_case.LoadSearchItemListUC
+import com.nesml.search_ui.ui.main.feature.list.use_case.SearchListLoaded
 import com.nesml.search_ui.ui.main.feature.list.use_case.SearchListState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -21,6 +23,8 @@ class SearchListViewModel(
     private val loadSearchItemListUC: LoadSearchItemListUC,
     private val loadSearchItemUC: LoadSearchItemUC
 ) : BaseCoroutineViewModel(resourceManager, errorHandler) {
+
+    var searchItemSelectedId: String? = null
 
     private val stateListScreen = MutableLiveData<SearchListState>()
     fun getScreenListState(): LiveData<SearchListState> = stateListScreen
@@ -37,6 +41,23 @@ class SearchListViewModel(
     }
 
     fun getSearchItem(searchItemId: String) {
+        viewModelScope.launch(errorHandler) {
+            if (searchItemSelectedId == null) {
+                loadFromDB(searchItemId)
+            } else {
+                when (val currentState = stateListScreen.value) {
+                    is SearchListLoaded -> stateDetailScreen.value = SearchDetailLoaded(
+                        currentState.allItems.first {
+                            it.id == searchItemSelectedId
+                        }
+                    )
+                    null -> loadFromDB(searchItemId)
+                }
+            }
+        }
+    }
+
+    private fun loadFromDB(searchItemId: String) {
         viewModelScope.launch(errorHandler) {
             loadSearchItemUC.execute(searchItemId).collect {
                 stateDetailScreen.value = it

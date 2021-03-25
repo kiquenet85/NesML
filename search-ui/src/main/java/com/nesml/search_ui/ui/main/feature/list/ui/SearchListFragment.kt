@@ -89,6 +89,7 @@ class SearchListFragment : BaseFragment(), SearchItemListAdapter.SearchItemListe
     }
 
     private fun navigateToItemDetail(id: String) {
+        viewModel.searchItemSelectedId = id
         navigator.navigateTo(SearchDetailFragment.newInstance(id))
     }
 

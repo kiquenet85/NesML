@@ -10,7 +10,7 @@ import kotlinx.coroutines.withContext
 class LoadSearchItemListUC(private val searchRepository: SearchRepository) {
 
     suspend fun execute(query: String) = withContext(Dispatchers.Default) {
-        searchRepository.getAll(ItemSearchInfo(ACCOUNT_MOCK, query))
+        searchRepository.getAllRemote(ItemSearchInfo(ACCOUNT_MOCK, query))
             .map { list ->
                 SearchListLoaded(list)
             }
