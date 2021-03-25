@@ -29,7 +29,6 @@ class SearchItemDetailAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-        val context = viewHolder.name.context
         with(localDataSet[position]) {
             viewHolder.name.text = this.name
             val values = StringBuilder()

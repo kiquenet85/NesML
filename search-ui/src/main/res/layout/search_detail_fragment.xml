@@ -46,13 +46,13 @@
         android:gravity="center"
         android:textSize="@dimen/large_text_size"
         app:layout_constraintBottom_toTopOf="@+id/installments"
-        app:layout_constraintEnd_toStartOf="@+id/currency"
+        app:layout_constraintEnd_toStartOf="@+id/mercado_pago"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/name"
         tools:text="$4500000" />
 
     <TextView
-        android:id="@+id/currency"
+        android:id="@+id/mercado_pago"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -101,6 +101,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buying_mode" />
+        app:layout_constraintTop_toBottomOf="@+id/buying_mode"
+        tools:listitem="@layout/search_attribute_detail_item" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

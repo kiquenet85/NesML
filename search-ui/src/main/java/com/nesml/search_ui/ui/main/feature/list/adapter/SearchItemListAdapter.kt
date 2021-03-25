@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.manager.ResourceManager
 import com.nesml.search_ui.R
+import com.nesml.search_ui.ui.main.util.CircleTransform
 import com.nesml.storage.model.search.entity.SearchItem
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -40,20 +41,29 @@ class SearchItemListAdapter(
         val context = viewHolder.name.context
         with(localDataSet[position]) {
             viewHolder.name.text = this.title
-            viewHolder.price.text =
+
+            val priceData =
                 this.price?.toString() ?: this.sale_price ?: this.original_price?.toString()
-                        ?: context.getString(R.string.search_list_no_price_found)
+            viewHolder.price.text =
+                priceData?.let { resourceManager.formatCurrencyCOP(it.toLong()) }
+                    ?: context.getString(R.string.search_list_no_price_found)
+
             viewHolder.installments.text = this.installment?.let {
                 if (it.quantity != null && it.amount != null) "${it.quantity} x ${it.amount}"
                 else context.getString(R.string.search_list_no_installments)
             }
+
             this.condition?.let {
                 viewHolder.arrival.text = this.condition
             }
+
             this.thumbnail?.let {
                 val https = it.replace("http://", "https://")
                 Picasso.get()
                     .load(https)
+                    .resize(100, 100)
+                    .centerInside()
+                    .transform(CircleTransform())
                     .into(viewHolder.image, object : Callback {
                         override fun onSuccess() {
 
@@ -64,6 +74,7 @@ class SearchItemListAdapter(
                         }
                     })
             }
+
             viewHolder.container.setOnClickListener {
                 searchItemListener.onSearchItemClick(this)
             }

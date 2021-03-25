@@ -21,6 +21,7 @@ import com.nesml.search_ui.ui.main.di.component.SearchUIProvider
 import com.nesml.search_ui.ui.main.feature.detail.adapter.SearchItemDetailAdapter
 import com.nesml.search_ui.ui.main.feature.detail.use_case.SearchDetailLoaded
 import com.nesml.search_ui.ui.main.feature.list.ui.SearchListViewModel
+import com.nesml.search_ui.ui.main.util.CircleTransform
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
@@ -32,10 +33,9 @@ class SearchDetailFragment : BaseFragment() {
     private lateinit var image: ImageView
     private lateinit var name: TextView
     private lateinit var price: TextView
-    private lateinit var currency: TextView
+    private lateinit var mercadoPago: TextView
     private lateinit var installments: TextView
     private lateinit var buyingMode: TextView
-
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchItemDetailAdapter: SearchItemDetailAdapter
     private val viewModel by viewModels<SearchListViewModel>(factoryProducer = {
@@ -60,7 +60,7 @@ class SearchDetailFragment : BaseFragment() {
         image = view.findViewById(R.id.itemImage)
         name = view.findViewById(R.id.name)
         price = view.findViewById(R.id.price)
-        currency = view.findViewById(R.id.currency)
+        mercadoPago = view.findViewById(R.id.mercado_pago)
         installments = view.findViewById(R.id.installments)
         buyingMode = view.findViewById(R.id.buying_mode)
 
@@ -99,6 +99,9 @@ class SearchDetailFragment : BaseFragment() {
                     (searchDetailState).apply {
                         Picasso.get()
                             .load(item.thumbnail?.replace("http://", "https://") ?: EMPTY_STRING)
+                            .centerInside()
+                            .resize(150, 150)
+                            .transform(CircleTransform())
                             .into(image, object : Callback {
                                 override fun onSuccess() {
 
@@ -109,14 +112,24 @@ class SearchDetailFragment : BaseFragment() {
                                 }
                             })
                         name.text = item.title ?: EMPTY_STRING
-                        price.text = item.price?.toString() ?: item.sale_price
-                                ?: item.original_price?.toString()
-                                ?: getString(R.string.search_list_no_price_found)
-                        currency.text = item.currency_id
+
+                        val priceData =
+                            item.price?.toString() ?: item.sale_price
+                            ?: item.original_price?.toString()
+                        price.text =
+                            priceData?.let { resourceManager.formatCurrencyCOP(it.toLong()) }
+                                ?: resourceManager.getString(R.string.search_list_no_price_found)
+
+                        mercadoPago.text =
+                            if (item.accepts_mercadopago == true) getString(R.string.search_detail_accept_mercado_pago) else getString(
+                                R.string.search_detail_NOT_accept_mercado_pago
+                            )
+
                         installments.text = item.installment?.let {
                             if (it.quantity != null && it.amount != null) "${it.quantity} x ${it.amount}"
                             else context?.getString(R.string.search_list_no_installments)
                         }
+
                         buyingMode.text = item.buying_mode
 
                         searchItemDetailAdapter.addNewItems(item.attributes ?: emptyList())

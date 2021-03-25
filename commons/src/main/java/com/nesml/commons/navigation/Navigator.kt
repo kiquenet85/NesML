@@ -10,12 +10,13 @@ import com.nesml.commons.util.EMPTY_STRING
 
 class Navigator(private val activity: AppCompatActivity) {
 
-    fun navigateTo(fragment: Fragment) {
+    fun navigateTo(fragment: Fragment, rootFragment: Boolean = false) {
         Log.v(
             Navigator::class.java.simpleName,
             "Navigating to Fragment ${fragment::class.java.canonicalName}"
         )
         pushFragment(
+            rootFragment,
             fragment,
             true,
             R.id.frag_container,
@@ -33,16 +34,16 @@ class Navigator(private val activity: AppCompatActivity) {
     }
 
     private fun pushFragment(
+        rootFragment: Boolean,
         fragment: Fragment, addToBackStack: Boolean,
         containerId: Int, tag: String, usingAddTransaction: Boolean = false
     ): Int {
 
         val transaction = activity.supportFragmentManager.beginTransaction()
-        if (addToBackStack && activity.supportFragmentManager.backStackEntryCount > 1) {
+        if (addToBackStack && !rootFragment) {
             transaction.addToBackStack(tag)
         }
 
-        // use commitAllowingStateLoss per Support Library bug: https://code.google.com/p/android/issues/detail?id=19917
         return if (usingAddTransaction) {
             transaction.add(containerId, fragment, tag).commitAllowingStateLoss()
         } else {

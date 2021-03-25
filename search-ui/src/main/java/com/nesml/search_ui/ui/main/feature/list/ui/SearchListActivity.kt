@@ -12,7 +12,7 @@ class SearchListActivity : BaseActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         if (savedInstanceState == null) {
-            navigator.navigateTo(SearchListFragment.newInstance())
+            navigator.navigateTo(SearchListFragment.newInstance(), rootFragment = true)
         }
     }
 }

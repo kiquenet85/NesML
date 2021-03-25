@@ -5,6 +5,7 @@ import androidx.annotation.*
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.nesml.commons.util.EMPTY_STRING
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,6 +20,10 @@ import java.util.*
 class ResourceManager private constructor(private val appContext: Context) {
 
     private val simpleDate: SimpleDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
+    private val formatCOP = NumberFormat.getCurrencyInstance().apply {
+        maximumFractionDigits = 0
+        currency = Currency.getInstance("COP")
+    }
 
     enum class ResourceType(val value: String) {
         STRING("string"),
@@ -227,6 +232,10 @@ class ResourceManager private constructor(private val appContext: Context) {
     fun formatDate(dateString: String?): String {
         return dateString?.let { simpleDate.format(Date(dateString.toLong())) }
             ?: EMPTY_STRING
+    }
+
+    fun formatCurrencyCOP(currencyString: Long): String {
+        return formatCOP.format(currencyString)
     }
 
     companion object {
