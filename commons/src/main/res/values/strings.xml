@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="general_error_handled">Something went wrong please try later!</string>
+    <string name="general_no_internet_error">It seems your connection is lost, please ensure you have connection!</string>
 </resources>

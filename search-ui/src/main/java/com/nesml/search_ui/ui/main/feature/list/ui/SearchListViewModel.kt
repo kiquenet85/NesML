@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.nesml.commons.BaseCoroutineViewModel
 import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.manager.ResourceManager
+import com.nesml.commons.network.NetworkManager
 import com.nesml.search_ui.ui.main.feature.detail.use_case.LoadSearchItemUC
 import com.nesml.search_ui.ui.main.feature.detail.use_case.SearchDetailLoaded
 import com.nesml.search_ui.ui.main.feature.detail.use_case.SearchDetailState
@@ -20,9 +21,10 @@ class SearchListViewModel(
     private val state: SavedStateHandle,
     resourceManager: ResourceManager,
     errorHandler: ErrorHandler,
+    networkManager: NetworkManager,
     private val loadSearchItemListUC: LoadSearchItemListUC,
     private val loadSearchItemUC: LoadSearchItemUC
-) : BaseCoroutineViewModel(resourceManager, errorHandler) {
+) : BaseCoroutineViewModel(resourceManager, errorHandler, networkManager) {
 
     var searchItemSelectedId: String? = null
 

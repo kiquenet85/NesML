@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.manager.ResourceManager
+import com.nesml.commons.network.NetworkManager
 import com.nesml.search_services.repository.search.SearchRepository
 import com.nesml.search_ui.ui.main.feature.detail.use_case.LoadSearchItemUC
 import com.nesml.search_ui.ui.main.feature.list.use_case.LoadSearchItemListUC
@@ -17,6 +18,7 @@ class SearchViewModelFactory constructor(
     private val errorHandler: ErrorHandler,
     private val resourceManager: ResourceManager,
     private val searchRepository: SearchRepository,
+    private val networkManager: NetworkManager,
     defaultArgs: Bundle? = null
 ) : AbstractSavedStateViewModelFactory(owner, defaultArgs) {
 
@@ -32,6 +34,7 @@ class SearchViewModelFactory constructor(
                         handle,
                         resourceManager,
                         errorHandler,
+                        networkManager,
                         LoadSearchItemListUC(searchRepository),
                         LoadSearchItemUC(searchRepository)
                     )
