@@ -11,25 +11,26 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.nesml.commons.BaseFragment
 import com.nesml.commons.util.MarginItemDecoration
 import com.nesml.search_ui.R
 import com.nesml.search_ui.ui.main.di.component.SearchUIProvider
+import com.nesml.search_ui.ui.main.feature.detail.ui.SearchDetailFragment
 import com.nesml.search_ui.ui.main.feature.list.adapter.SearchItemListAdapter
 import com.nesml.search_ui.ui.main.feature.list.use_case.SearchListLoaded
+import com.nesml.storage.model.search.entity.SearchItem
 
 /**
  * A simple [Fragment] subclass as the default destination in the navigation.
  */
-class SearchListFragment : BaseFragment() {
+class SearchListFragment : BaseFragment(), SearchItemListAdapter.SearchItemListener {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var searchItemAdapter: SearchItemListAdapter
     private val viewModel by viewModels<SearchListViewModel>(factoryProducer = {
         (requireActivity().application as SearchUIProvider).searchUI.viewModelModule
             .provideSearchViewModelFactory((requireActivity() as AppCompatActivity))
-    }, ownerProducer = { this })
+    }, ownerProducer = { requireActivity() })
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,7 +48,8 @@ class SearchListFragment : BaseFragment() {
 
         recyclerView = view.findViewById(R.id.searchResults)
 
-        searchItemAdapter = SearchItemListAdapter(resourceManager, errorHandler, mutableListOf())
+        searchItemAdapter =
+            SearchItemListAdapter(this, resourceManager, errorHandler, mutableListOf())
         val itemDecorator = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         itemDecorator.setDrawable(
             ContextCompat.getDrawable(
@@ -70,24 +72,27 @@ class SearchListFragment : BaseFragment() {
         }
 
         viewModel.getErrorState().observe(viewLifecycleOwner) { errorState ->
-            getView()?.let {
-                Snackbar.make(it, errorState.message, Snackbar.LENGTH_SHORT).show()
-            }
+            commonHandleUIError(errorState)
         }
 
-        viewModel.getScreenState().observe(viewLifecycleOwner) { searchListState ->
+        viewModel.getScreenListState().observe(viewLifecycleOwner) { searchListState ->
             when (searchListState) {
                 is SearchListLoaded -> searchItemAdapter.addNewItems(searchListState.allItems)
             }
         }
     }
 
-    private fun navigateToItemDetail() {
+    override fun onSearchItemClick(searchItem: SearchItem) {
+        navigateToItemDetail(searchItem.id)
+    }
 
+    private fun navigateToItemDetail(id: String) {
+        navigator.navigateTo(SearchDetailFragment.newInstance(id))
     }
 
     companion object {
         @JvmStatic
         fun newInstance(): SearchListFragment = SearchListFragment()
     }
+
 }

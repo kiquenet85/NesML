@@ -3,6 +3,7 @@ package com.nesml.search_services.repository.search
 import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.repository.base.RefreshRateLimit
 import com.nesml.commons.repository.base.operation.RepositoryReadOperation
+import com.nesml.commons.util.Optional
 import com.nesml.search_services.model.network.SearchItemDTO
 import com.nesml.search_services.repository.search.sources.SearchLocalSource
 import com.nesml.search_services.repository.search.sources.SearchRemoteSource
@@ -15,6 +16,7 @@ import com.nesml.storage.model.search.entity.Installment
 import com.nesml.storage.model.search.entity.SearchItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import java.util.*
 import javax.inject.Inject
 
@@ -88,6 +90,7 @@ class SearchRepository @Inject constructor(
                                     AttributeValue(
                                         id = UUID.randomUUID().toString(),
                                         attributeId = attributeId,
+                                        searchItemId = it.id,
                                         name = attributeValueDTO.name
                                     )
                                 }
@@ -153,6 +156,31 @@ class SearchRepository @Inject constructor(
             override fun getErrorHandler() = errorHandler
         }
         return operation.execute(info)
+    }
+
+    suspend fun getById(searchItemId: String): Flow<SearchItem> {
+        return (localSource.getById(searchItemId)).map {
+            if (it is Optional.None) {
+                throw IllegalStateException("Clicked item does not exist on the database")
+            } else {
+                (it as Optional.Some).element
+            }
+        }
+            .combine(localSourceInstallment.getBySearchItemId(searchItemId)) { searchItem, installment ->
+                if (installment is Optional.Some) searchItem.installment = installment.element
+                searchItem
+            }.combine(localSourceAttribute.getById(searchItemId)) { searchItem, attributes ->
+                searchItem.attributes = attributes
+                searchItem
+            }
+            .combine(localSourceAttributeValue.getById(searchItemId)) { searchItem, attributeValues ->
+                val mapValuesByAttribute = attributeValues.groupBy { it.attributeId }
+                searchItem.attributes?.forEach {
+                    //TODO you can group by on the SQL directly
+                    it.values = mapValuesByAttribute[it.id]
+                }
+                searchItem
+            }
     }
 }
 

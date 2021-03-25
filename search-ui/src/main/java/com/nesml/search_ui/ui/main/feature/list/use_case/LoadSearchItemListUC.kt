@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
-class LoadSearchUC(private val searchRepository: SearchRepository) {
+class LoadSearchItemListUC(private val searchRepository: SearchRepository) {
 
     suspend fun execute(query: String) = withContext(Dispatchers.Default) {
         searchRepository.getAll(ItemSearchInfo(ACCOUNT_MOCK, query))

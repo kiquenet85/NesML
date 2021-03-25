@@ -1,7 +1,6 @@
 package com.nesml.search_services.repository.search.sources.attribute
 
 import androidx.room.withTransaction
-import com.nesml.commons.util.Optional
 import com.nesml.storage.AppDB
 import com.nesml.storage.model.search.entity.Attribute
 import kotlinx.coroutines.Dispatchers
@@ -28,9 +27,8 @@ class AttributeLocalSourceImp @Inject constructor(private val db: AppDB) : Attri
             .flowOn(Dispatchers.Default)
     }
 
-    override fun getById(id: String): Flow<Optional<Attribute>> {
-        return db.attributeItemDAO().getById(id)
-            .map { if (it == null) Optional.None else Optional.Some(it) }
+    override fun getById(searchItemId: String): Flow<List<Attribute>> {
+        return db.attributeItemDAO().getById(searchItemId)
             .distinctUntilChanged()
             .conflate()
             .flowOn(Dispatchers.Default)

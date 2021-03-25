@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 4,
-    "identityHash": "43d7b184846623e5eb8c41b1965d83c0",
+    "identityHash": "8e27cbd5df8cf532677cb79f84d455fe",
     "entities": [
       {
         "tableName": "Account",
@@ -193,11 +193,11 @@
           },
           {
             "name": "index_SearchItem_accountId",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "accountId"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_SearchItem_accountId` ON `${TABLE_NAME}` (`accountId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_SearchItem_accountId` ON `${TABLE_NAME}` (`accountId`)"
           },
           {
             "name": "index_SearchItem_id_accountId",
@@ -270,11 +270,11 @@
           },
           {
             "name": "index_Attribute_searchItemId",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "searchItemId"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_Attribute_searchItemId` ON `${TABLE_NAME}` (`searchItemId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_Attribute_searchItemId` ON `${TABLE_NAME}` (`searchItemId`)"
           },
           {
             "name": "index_Attribute_id_searchItemId",
@@ -391,7 +391,7 @@
       },
       {
         "tableName": "AttributeValue",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `attributeId` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`id`, `attributeId`), FOREIGN KEY(`attributeId`) REFERENCES `Attribute`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `attributeId` TEXT NOT NULL, `searchItemId` TEXT NOT NULL, `name` TEXT, PRIMARY KEY(`id`, `attributeId`), FOREIGN KEY(`attributeId`) REFERENCES `Attribute`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`searchItemId`) REFERENCES `SearchItem`(`id`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
         "fields": [
           {
             "fieldPath": "id",
@@ -402,6 +402,12 @@
           {
             "fieldPath": "attributeId",
             "columnName": "attributeId",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "searchItemId",
+            "columnName": "searchItemId",
             "affinity": "TEXT",
             "notNull": true
           },
@@ -430,11 +436,19 @@
           },
           {
             "name": "index_AttributeValue_attributeId",
-            "unique": true,
+            "unique": false,
             "columnNames": [
               "attributeId"
             ],
-            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AttributeValue_attributeId` ON `${TABLE_NAME}` (`attributeId`)"
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AttributeValue_attributeId` ON `${TABLE_NAME}` (`attributeId`)"
+          },
+          {
+            "name": "index_AttributeValue_searchItemId",
+            "unique": false,
+            "columnNames": [
+              "searchItemId"
+            ],
+            "createSql": "CREATE INDEX IF NOT EXISTS `index_AttributeValue_searchItemId` ON `${TABLE_NAME}` (`searchItemId`)"
           },
           {
             "name": "index_AttributeValue_id_attributeId",
@@ -444,6 +458,16 @@
               "attributeId"
             ],
             "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AttributeValue_id_attributeId` ON `${TABLE_NAME}` (`id`, `attributeId`)"
+          },
+          {
+            "name": "index_AttributeValue_id_attributeId_searchItemId",
+            "unique": true,
+            "columnNames": [
+              "id",
+              "attributeId",
+              "searchItemId"
+            ],
+            "createSql": "CREATE UNIQUE INDEX IF NOT EXISTS `index_AttributeValue_id_attributeId_searchItemId` ON `${TABLE_NAME}` (`id`, `attributeId`, `searchItemId`)"
           }
         ],
         "foreignKeys": [
@@ -457,6 +481,17 @@
             "referencedColumns": [
               "id"
             ]
+          },
+          {
+            "table": "SearchItem",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "searchItemId"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
           }
         ]
       }
@@ -464,7 +499,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '43d7b184846623e5eb8c41b1965d83c0')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '8e27cbd5df8cf532677cb79f84d455fe')"
     ]
   }
 }

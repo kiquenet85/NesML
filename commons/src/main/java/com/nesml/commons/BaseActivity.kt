@@ -10,7 +10,7 @@ import com.nesml.commons.network.WifiReceiver
 
 abstract class BaseActivity : AppCompatActivity() {
 
-    protected val navigator: Navigator = Navigator(this)
+    val navigator: Navigator = Navigator(this)
     protected lateinit var networkManager: NetworkManager
     protected lateinit var wifiReceiver: WifiReceiver
     protected lateinit var resourceManager: ResourceManager

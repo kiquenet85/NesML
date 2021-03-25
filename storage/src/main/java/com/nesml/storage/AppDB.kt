@@ -16,7 +16,7 @@ import com.nesml.storage.model.search.entity.SearchItem
 @Database(
     entities = [
         Account::class, SearchItem::class, Attribute::class, Installment::class, AttributeValue::class
-    ], version = 3
+    ], version = 4
 )
 abstract class AppDB : RoomDatabase() {
 

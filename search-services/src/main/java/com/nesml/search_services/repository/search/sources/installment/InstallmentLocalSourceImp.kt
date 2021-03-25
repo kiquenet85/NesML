@@ -1,6 +1,7 @@
 package com.nesml.search_services.repository.search.sources.installment
 
 import androidx.room.withTransaction
+import com.nesml.commons.util.Optional
 import com.nesml.storage.AppDB
 import com.nesml.storage.model.search.entity.Installment
 import kotlinx.coroutines.Dispatchers
@@ -22,6 +23,17 @@ class InstallmentLocalSourceImp @Inject constructor(private val db: AppDB) :
     override fun getAll(): Flow<List<Installment>> {
         return db.installmentItemDAO().getAll()
             .filterNotNull()
+            .distinctUntilChanged()
+            .conflate()
+            .flowOn(Dispatchers.Default)
+    }
+
+    override fun getBySearchItemId(searchItemId: String): Flow<Optional<Installment>> {
+        return db.installmentItemDAO().getById(searchItemId)
+            .map {
+                if (it == null) Optional.None
+                else Optional.Some(it)
+            }
             .distinctUntilChanged()
             .conflate()
             .flowOn(Dispatchers.Default)

@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.nesml.commons.BaseCoroutineViewModel
 import com.nesml.commons.error.ErrorHandler
 import com.nesml.commons.manager.ResourceManager
-import com.nesml.search_ui.ui.main.feature.list.use_case.LoadSearchUC
+import com.nesml.search_ui.ui.main.feature.detail.use_case.LoadSearchItemUC
+import com.nesml.search_ui.ui.main.feature.detail.use_case.SearchDetailState
+import com.nesml.search_ui.ui.main.feature.list.use_case.LoadSearchItemListUC
 import com.nesml.search_ui.ui.main.feature.list.use_case.SearchListState
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -16,16 +18,28 @@ class SearchListViewModel(
     private val state: SavedStateHandle,
     resourceManager: ResourceManager,
     errorHandler: ErrorHandler,
-    private val loadSearchUC: LoadSearchUC,
+    private val loadSearchItemListUC: LoadSearchItemListUC,
+    private val loadSearchItemUC: LoadSearchItemUC
 ) : BaseCoroutineViewModel(resourceManager, errorHandler) {
 
-    private val stateScreen = MutableLiveData<SearchListState>()
-    fun getScreenState(): LiveData<SearchListState> = stateScreen
+    private val stateListScreen = MutableLiveData<SearchListState>()
+    fun getScreenListState(): LiveData<SearchListState> = stateListScreen
+
+    private val stateDetailScreen = MutableLiveData<SearchDetailState>()
+    fun getScreenDetailState(): LiveData<SearchDetailState> = stateDetailScreen
 
     fun searchItemResults(query: String) {
         viewModelScope.launch(errorHandler) {
-            loadSearchUC.execute(query).collect {
-                stateScreen.value = it
+            loadSearchItemListUC.execute(query).collect {
+                stateListScreen.value = it
+            }
+        }
+    }
+
+    fun getSearchItem(searchItemId: String) {
+        viewModelScope.launch(errorHandler) {
+            loadSearchItemUC.execute(searchItemId).collect {
+                stateDetailScreen.value = it
             }
         }
     }

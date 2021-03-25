@@ -14,6 +14,7 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
 class SearchItemListAdapter(
+    private val searchItemListener: SearchItemListener,
     private val resourceManager: ResourceManager,
     private val errorHandler: ErrorHandler,
     private val localDataSet: MutableList<SearchItem>
@@ -21,11 +22,12 @@ class SearchItemListAdapter(
     RecyclerView.Adapter<SearchItemListAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val container: ViewGroup = view.findViewById(R.id.container)
         val image: ImageView = view.findViewById(R.id.itemImage)
         val name: TextView = view.findViewById(R.id.name)
         val price: TextView = view.findViewById(R.id.price)
         val installments: TextView = view.findViewById(R.id.installments)
-        val arrival: TextView = view.findViewById(R.id.arrival)
+        val arrival: TextView = view.findViewById(R.id.buying_mode)
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -62,6 +64,9 @@ class SearchItemListAdapter(
                         }
                     })
             }
+            viewHolder.container.setOnClickListener {
+                searchItemListener.onSearchItemClick(this)
+            }
         }
     }
 
@@ -73,5 +78,9 @@ class SearchItemListAdapter(
         localDataSet.clear()
         localDataSet.addAll(allItems)
         notifyDataSetChanged()
+    }
+
+    interface SearchItemListener {
+        fun onSearchItemClick(searchItem: SearchItem)
     }
 }

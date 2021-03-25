@@ -7,8 +7,8 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface InstallmentItemDAO {
 
-    @Query("SELECT * FROM Installment where id = :id")
-    fun getById(id: String): Flow<Installment?>
+    @Query("SELECT * FROM Installment where searchItemId = :searchItemId")
+    fun getById(searchItemId: String): Flow<Installment?>
 
     @Query("SELECT * FROM Installment")
     fun getAll(): Flow<List<Installment>>
