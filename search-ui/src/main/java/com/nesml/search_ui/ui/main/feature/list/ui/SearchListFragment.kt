@@ -12,11 +12,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nesml.commons.BaseFragment
+import com.nesml.commons.util.EMPTY_STRING
 import com.nesml.commons.util.MarginItemDecoration
 import com.nesml.search_ui.R
 import com.nesml.search_ui.ui.main.di.component.SearchUIProvider
 import com.nesml.search_ui.ui.main.feature.detail.ui.SearchDetailFragment
 import com.nesml.search_ui.ui.main.feature.list.adapter.SearchItemListAdapter
+import com.nesml.search_ui.ui.main.feature.list.ui.SearchListActivity.Companion.SEARCH_QUERY_KEY
 import com.nesml.search_ui.ui.main.feature.list.use_case.SearchListLoaded
 import com.nesml.storage.model.search.entity.SearchItem
 
@@ -40,7 +42,7 @@ class SearchListFragment : BaseFragment(), SearchItemListAdapter.SearchItemListe
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.searchItemResults("Motorola G6")
+        viewModel.searchItemResults(requireArguments().getString(SEARCH_QUERY_KEY) ?: EMPTY_STRING)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,7 +94,11 @@ class SearchListFragment : BaseFragment(), SearchItemListAdapter.SearchItemListe
 
     companion object {
         @JvmStatic
-        fun newInstance(): SearchListFragment = SearchListFragment()
+        fun newInstance(query: String): SearchListFragment = SearchListFragment().also {
+            it.arguments = Bundle().apply {
+                putString(SEARCH_QUERY_KEY, query)
+            }
+        }
     }
 
 }

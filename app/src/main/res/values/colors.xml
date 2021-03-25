@@ -7,4 +7,14 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!--Mercado libre colors-->
+    <color name="yellow_ml">#ffe600</color>
+    <color name="blue_ml">#000079</color>
+
+    <color name="colorPrimary">#ffe600</color>
+    <color name="colorPrimaryDark">#000079</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="colorGray">#eaeaea</color>
+
 </resources>

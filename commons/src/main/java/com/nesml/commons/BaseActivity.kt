@@ -1,6 +1,7 @@
 package com.nesml.commons
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.nesml.commons.di.common.component.CommonProvider
 import com.nesml.commons.manager.ResourceManager
@@ -22,4 +23,7 @@ abstract class BaseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
     }
 
+    protected open fun keyboardResizeMode() {
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
 }

@@ -57,6 +57,9 @@ dependencies {
     api project(':search-ui')
     api project(':storage')
 
+    //ConstraintLayout
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+
     //Dagger
     implementation "com.google.dagger:dagger:$google_dagger_version"
     kapt "com.google.dagger:dagger-compiler:$google_dagger_version"
@@ -72,8 +75,6 @@ dependencies {
     // Nav graph
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-    // Feature module Support
-    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "androidx.core:core-ktx:$android_core"
