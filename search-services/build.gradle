@@ -5,6 +5,7 @@ plugins {
 }
 
 apply from: "$rootProject.projectDir/buildSystem/dependencies.gradle"
+apply from: "$rootProject.projectDir/buildSystem/flavors.gradle"
 
 android {
 
@@ -27,19 +28,7 @@ android {
         }
     }
 
-    flavorDimensions "type"
-
-    productFlavors {
-        rx {
-            versionNameSuffix "-rx"
-            dimension "type"
-        }
-
-        coroutines {
-            versionNameSuffix "-cs"
-            dimension "type"
-        }
-    }
+    with flavorConfig
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

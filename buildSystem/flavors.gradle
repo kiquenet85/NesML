@@ -1,0 +1,29 @@
+ext.flavorConfig = {
+
+    flavorDimensions "type"
+
+    productFlavors {
+        rx {
+            ext.myApplicationIdSuffix = '.rx'
+            versionNameSuffix "-rx"
+            dimension "type"
+        }
+
+        coroutines {
+            ext.myApplicationIdSuffix = '.co'
+            versionNameSuffix "-cs"
+            dimension "type"
+        }
+    }
+
+    productFlavors.all { flavor ->
+        if (flavor.hasProperty('myApplicationIdSuffix') && isApplicationProject()) {
+            flavor.applicationIdSuffix = flavor.myApplicationIdSuffix
+        }
+    }
+
+}
+
+def isApplicationProject() {
+    return project.android.class.simpleName.startsWith('BaseAppModuleExtension')
+}
