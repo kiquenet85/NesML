@@ -12,7 +12,7 @@ class StorageModule {
 
     @Provides
     @Singleton
-    fun providesApplication(application: Application): AppDB {
+    fun providesDB(application: Application): AppDB {
         return Room.databaseBuilder(application.applicationContext, AppDB::class.java, "RoomDB")
             .fallbackToDestructiveMigration().build()
     }

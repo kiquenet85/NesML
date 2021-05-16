@@ -21,6 +21,10 @@ abstract class BaseActivity : AppCompatActivity() {
         wifiReceiver = (application as CommonProvider).commonComponent.wifiReceiver
         resourceManager = (application as CommonProvider).commonComponent.resourceManager
         super.onCreate(savedInstanceState)
+
+        // you can use for security
+        //window.setFlags(LayoutParams.FLAG_SECURE, LayoutParams.FLAG_SECURE)
+        //window.decorView.filterTouchesWhenObscured = true
     }
 
     protected open fun keyboardResizeMode() {

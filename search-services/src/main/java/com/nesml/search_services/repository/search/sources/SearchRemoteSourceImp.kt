@@ -7,6 +7,6 @@ import javax.inject.Inject
 class SearchRemoteSourceImp @Inject constructor(val searchAPI: SearchAPI) : SearchRemoteSource {
 
     override suspend fun getAll(query: String): SearchResponse {
-        return searchAPI.getJobSitesByAccountId(query)
+        return searchAPI.getItemsByQuery(query)
     }
 }

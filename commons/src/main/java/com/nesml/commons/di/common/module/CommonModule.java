@@ -16,8 +16,6 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Module which provides activity context.
- *
  * @author n.diazgranados
  */
 @Module
